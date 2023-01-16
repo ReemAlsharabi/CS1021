@@ -1,0 +1,65 @@
+Input               / get the array size
+	Store       SIZE
+	Skipcond 800 / if size > 0 skip the next instruction
+    	Jump 		END
+	Load       	 ARR     / else, Array address in AC arr[0]
+	Store      	 ARRELEMENT / store Arr address in ARRELEMENT
+/ first loop to get the array elements
+GETVALUE,   	Load        SIZE
+			Subt        INDEX	/ SIZE - INDEX (while i<size)
+			Skipcond    800		/ if SIZE > INDEX we're not done yet
+			Jump        FIND   / if we entered all elements, go look for the smallest
+			Input               / else, read the next element
+			StoreI      ARRELEMENT / store in (arr[i+1] = ARRELEMENT)
+			Load        ARRELEMENT
+			Add         ONE
+			Store       ARRELEMENT / ARRELEMENT++
+			Load        INDEX
+			Add         ONE
+			Store       INDEX / INDEX++
+			Jump        GETVALUE  / get the next element
+      
+/ make index = 1, start from the first element and set it as SMALLEST
+FIND,			load       	ARR     / copy array address into ARRELEMENT
+			store     	ARRELEMENT / to start from the first element
+			Load    	ONE
+			store       	INDEX  / INDEX = 1
+			LoadI		ARRELEMENT / first element
+			Store		SMALLEST / SMALLEST = first element
+			JnS		FUNCTION / jump and store the address of the next instruction
+           			 Jump 		PRINT
+FUNCTION,   	Dec 	0 	/ the address of the instruction after JnS will be stored here
+FINDSMALLEST,	Load		SIZE / while i<size
+  			Subt		INDEX
+          			Skipcond 800 / if we reach the end of the array
+          			JumpI		FUNCTION / go back where we called the function
+          			Load		ARRELEMENT / else get arr[element]
+          			Add		ONE
+          			Store 		ARRELEMENT / ARRELEMENT++
+          			Load 		INDEX
+          			Add 		ONE
+          			Store 		INDEX  / INDEX++
+          			Jump	 	SUB / function to check if arr[element+1]<arr[element]
+          			JumpI 		FUNCTION / go back where we called the function
+          
+SUB,		LoadI		ARRELEMENT / arr[element] (because we increased ARRELEMENT)
+          		Subt 		SMALLEST / if arr[element] - NUM < 0 then it's smaller
+          		Skipcond 000		 / if AC < 0 (if it's smaller set as SMALLEST)
+          		Jump		FINDSMALLEST / else go to the next element
+                	/ set as smallest
+          		LoadI		ARRELEMENT / arr[element]
+          		Store		SMALLEST / SMALLEST = arr[index+1]
+          		Jump		FINDSMALLEST / repeat
+      
+/ display the smallest number on the screen
+PRINT,          Load 		SMALLEST
+          		Output 
+          		Jump 		END / end the program
+
+SIZE,          	 Dec         	0       / user chosen array size
+INDEX,          Dec        	0       / current array index
+SMALLEST,  Dec        	 0       / value of smallest element
+ONE,		Dec         	1       / for ++
+ARRELEMENT,     Dec         80      / address of current array index (current element) arr[0]
+ARR,            Dec         80      / address for start of the array storage arr[0]
+END,            Halt
