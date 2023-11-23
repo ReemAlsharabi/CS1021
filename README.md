@@ -8,3 +8,22 @@ This program aims to find the smallest element in a list. It requires the user t
 
 **C++**
 * Run the code on any C++ compiler. For example: https://www.onlinegdb.com/
+
+## Test Cases:
+#### Case1: Sorted array of positive numbers (ascending)
+
+#### Case2: Sorted array of positive numbers (descending)
+
+#### Case3: Sorted array of negative numbers (ascending)
+
+#### Case4: Sorted array of negative numbers (descending)
+
+#### Case5: Unsorted array of negative numbers
+
+#### Case6: Unsorted array of positive numbers
+
+#### Case7: array of the same number
+
+#### Case8: array of integers
+
+#### Case9: array of size 0 or less
